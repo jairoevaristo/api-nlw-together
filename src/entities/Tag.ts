@@ -10,7 +10,7 @@ import { v4 as uuid } from 'uuid';
 @Entity('tags')
 class Tag {
   @PrimaryColumn()
-  id: string;
+  readonly id: string;
 
   @Column()
   name: string;
