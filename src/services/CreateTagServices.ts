@@ -14,12 +14,12 @@ class CreateTagServices {
   async execute(name: string): Promise<Tag> {
     if (!name) throw new AppError({
       status: 400,
-      message: 'Icorrect name'
+      message: 'Incorrect name'
     });
 
-    const tagAlreadyExist = this.tagRepository.findOne({ name });
+    const tagExist = await this.tagRepository.findOne({ name });
 
-    if (tagAlreadyExist) throw new AppError({
+    if (tagExist) throw new AppError({
       status: 409,
       message: 'Tag Already Exists'
     });
