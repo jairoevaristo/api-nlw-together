@@ -2,8 +2,8 @@ import { getCustomRepository, Repository } from 'typeorm';
 
 import { ICreateUserDTO } from '../dtos/CreateUserDTO';
 import { User } from '../entities/User';
+import { AppError } from '../errors/AppError';
 import { UserRepository } from '../repositories/UserRepository';
-
 class CreateUserServices {
   private userRepository: Repository<User>;
 
@@ -13,11 +13,17 @@ class CreateUserServices {
 
   async execute({ email, name, admin }: ICreateUserDTO): Promise<User> {
 
-    if (!email) throw new Error('E-mail incorrect');
+    if (!email) throw new AppError({
+      status: 400, 
+      message: 'E-mail incorrect' 
+    });
 
     const userExists = await this.userRepository.findOne({ email });
 
-    if (userExists) throw new Error('User already exists');
+    if (userExists) throw new AppError({
+      status: 409,
+      message: 'User already exists'
+    });
 
     const user = this.userRepository.create({
       name,
