@@ -4,7 +4,7 @@ import 'express-async-errors';
 
 import './database'
 import { routes } from './routes';
-import { handleError } from './middleware/ErrorMiddleware';
+import { handleError } from './middlewares/ErrorMiddleware';
 
 const app = express();
 
