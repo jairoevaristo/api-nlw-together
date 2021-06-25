@@ -11,7 +11,7 @@ class CreateUserServices {
     this.userRepository = getCustomRepository(UserRepository);
   }
 
-  async execute({ email, name, admin }: ICreateUserDTO): Promise<User> {
+  async execute({ email, name, admin, password }: ICreateUserDTO): Promise<User> {
 
     if (!email) throw new AppError({
       status: 400, 
@@ -29,6 +29,7 @@ class CreateUserServices {
       name,
       email,
       admin,
+      password
     });
 
     await this.userRepository.save(user);

@@ -5,13 +5,14 @@ import { CreateUserServices } from '../services/CreateUserServices';
 
 class CreateUserController {
   async handle(req: Request, res: Response) {
-    const { email, name, admin }: ICreateUserDTO = req.body;
+    const { email, name, admin, password }: ICreateUserDTO = req.body;
     const createUserServices = new CreateUserServices();
 
     const user = await createUserServices.execute({
       email,
       name,
-      admin
+      admin,
+      password
     });
 
     return res.status(201).json(user);
