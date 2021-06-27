@@ -1,4 +1,5 @@
 import { getCustomRepository, Repository } from 'typeorm';
+import { hash } from 'bcryptjs';
 
 import { ICreateUserDTO } from '../dtos/CreateUserDTO';
 import { User } from '../entities/User';
@@ -11,7 +12,7 @@ class CreateUserServices {
     this.userRepository = getCustomRepository(UserRepository);
   }
 
-  async execute({ email, name, admin, password }: ICreateUserDTO): Promise<User> {
+  async execute({ email, name, admin = false, password }: ICreateUserDTO): Promise<User> {
 
     if (!email) throw new AppError({
       status: 400, 
@@ -25,11 +26,13 @@ class CreateUserServices {
       message: 'User already exists'
     });
 
+    const passwordHash = await hash(password, 16);
+
     const user = this.userRepository.create({
       name,
       email,
       admin,
-      password
+      password: passwordHash
     });
 
     await this.userRepository.save(user);
